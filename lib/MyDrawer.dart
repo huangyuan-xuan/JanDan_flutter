@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter/gestures.dart';
+import 'package:url_launcher/url_launcher.dart';
 class MyDrawer extends StatelessWidget {
   const MyDrawer({
     Key key,
@@ -38,35 +39,76 @@ class MyDrawer extends StatelessWidget {
                 children: <Widget>[
                   ListTile(
                     leading: const Icon(Icons.all_inclusive),
-                    title: Text(
-                      "https://blog.huangyuanlove.com",
-                      style: TextStyle(
-                        color: Colors.blue,
-                      ),
+                    title: ClickableText(
+                      content: "https://blog.huangyuanlove.com",
                     ),
                   ),
                   ListTile(
                     leading: const Icon(Icons.insert_link),
-                    title: Text(
-                      "https://github.com/huangyuanlove",
-                      style: TextStyle(
-                        color: Colors.blue,
-                      ),
+                    title: ClickableText(
+                      content: "https://github.com/huangyuanlove",
                     ),
                   ),
                   ListTile(
                     leading: const Icon(Icons.book),
-                    title: Text(
-                      "https://huangyuan.gitbook.io/learning-record",
-                      style: TextStyle(
-                        color: Colors.blue,
-                      ),
-                    ),
-                  ),
+                    title: ClickableText(
+                        content:
+                            "https://huangyuan.gitbook.io/learning-record"),
+                  )
                 ],
               ))
             ],
           )),
+    );
+  }
+}
+
+class ClickableText extends StatefulWidget {
+  ClickableText({Key key, this.content}) : super(key: key);
+
+  final String content;
+
+  @override
+  _ClickableTextState createState() {
+    return new _ClickableTextState();
+  }
+}
+
+class _ClickableTextState
+    extends State<ClickableText> {
+  TapGestureRecognizer _tapGestureRecognizer = new TapGestureRecognizer();
+
+  _launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+
+  @override
+  void dispose() {
+    //用到GestureRecognizer的话一定要调用其dispose方法释放资源
+    _tapGestureRecognizer.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text.rich(TextSpan(children: [
+        TextSpan(
+          text: widget.content,
+          style: TextStyle(
+            color: Colors.blue,
+          ),
+          recognizer: _tapGestureRecognizer
+            ..onTap = () {
+            _launchURL(widget.content);
+            },
+        ),
+      ])),
     );
   }
 }

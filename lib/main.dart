@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'MyDrawer.dart';
+import 'joke.dart';
+
 void main() => runApp(App());
 
 class App extends StatelessWidget {
@@ -7,7 +9,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return new MaterialApp(
       title: "flutter demo",
-      theme: new ThemeData(primarySwatch:Colors.blueGrey),
+      theme: new ThemeData(primaryColor: Colors.black),
       home: new JanDanApp(),
     );
   }
@@ -44,13 +46,36 @@ class JanDanAppState extends State<JanDanApp>
       ),
       drawer: MyDrawer(),
       body: TabBarView(
-          controller: _tabController,
-          children: tabs.map((e) {
-            return Container(
-              alignment: Alignment.center,
-              child: Text(e, textScaleFactor: 5),
-            );
-          }).toList()),
+        controller: _tabController,
+        children: <Widget>[
+          Container(
+            alignment: Alignment.center,
+            child: Text("新鲜事",textScaleFactor: 5,),
+          ),
+          Container(
+            alignment: Alignment.center,
+            child: Text("流行",textScaleFactor: 5,),
+          ),
+          Container(
+            alignment: Alignment.center,
+            child: Text("无聊图",textScaleFactor: 5,),
+          ),
+          Joke(),
+          Container(
+            alignment: Alignment.center,
+            child: Text("妹子图",textScaleFactor: 5,),
+          ),
+        ],
+         ),
     );
   }
 }
+
+
+//controller: _tabController,
+//children: tabs.map((e) {
+//return Container(
+//alignment: Alignment.center,
+//child: Text(e, textScaleFactor: 5),
+//);
+//}).toList()
