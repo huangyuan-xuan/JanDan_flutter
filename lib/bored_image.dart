@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:transparent_image/transparent_image.dart';
 import 'dart:io';
 import 'dart:convert';
 
@@ -95,7 +96,9 @@ class BoredImageState extends State<BoredImage> {
                 ),
                 ),
               ),
-              Image.network(data["pics"][0]),
+              FadeInImage.memoryNetwork(
+                  placeholder: kTransparentImage,
+                  image:data["pics"][0]),
               Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
