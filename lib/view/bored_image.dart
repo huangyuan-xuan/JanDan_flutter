@@ -3,7 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'dart:io';
 import 'dart:convert';
-import 'public_widget.dart';
+import 'package:jandan_flutter/view/public_widget.dart';
 
 class BoredImage extends StatefulWidget {
   @override

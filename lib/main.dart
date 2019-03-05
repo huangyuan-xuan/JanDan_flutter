@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'MyDrawer.dart';
-import 'bored_image.dart';
-import 'girls_image.dart';
-import 'joke.dart';
-import 'news.dart';
+import 'package:jandan_flutter/view/MyDrawer.dart';
+import 'package:jandan_flutter/view/bored_image.dart';
+import 'package:jandan_flutter/view/girls_image.dart';
+import 'package:jandan_flutter/view/joke.dart';
+import 'package:jandan_flutter/view/news.dart';
 
 void main() {
 //  debugPaintSizeEnabled = true;
