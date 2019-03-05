@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import 'public_widget.dart';
+
 class Joke extends StatefulWidget {
   Joke({Key key}) : super(key: key);
 
@@ -94,7 +96,6 @@ class _JokeState extends State<Joke> {
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               Row(
-
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
@@ -131,35 +132,13 @@ class _JokeState extends State<Joke> {
         ),
       );
     } else {
-      return _getOnLoadMoreWidget();
+      return getOnLoadMoreWidget();
     }
-  }
-
-  // 加载更多时显示的组件
-  Widget _getOnLoadMoreWidget() {
-    return Center(
-      child: Padding(
-        padding: EdgeInsets.all(10.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              '加载中...     ',
-              style: TextStyle(fontSize: 16.0),
-            ),
-            CircularProgressIndicator(
-              strokeWidth: 1.0,
-            )
-          ],
-        ),
-      ),
-    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return  RefreshIndicator(
+    return RefreshIndicator(
         onRefresh: () => _loadData(false),
         child: new ListView.builder(
             controller: _scrollController,

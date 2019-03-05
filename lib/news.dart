@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import 'public_widget.dart';
+
 class News extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -66,85 +68,61 @@ class NewsState extends State<News> {
     }
   }
 
-  // 加载更多时显示的组件
-  Widget _getOnLoadMoreWidget() {
-    return Center(
-      child: Padding(
-        padding: EdgeInsets.all(10.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              '加载中...     ',
-              style: TextStyle(fontSize: 16.0),
-            ),
-            CircularProgressIndicator(
-              strokeWidth: 1.0,
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget getRow(int i) {
     if (i < widgets.length) {
       var data = widgets[i];
 
-      return
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Expanded(
-                flex: 5,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Container(
-                      height: 30,
-                      padding: EdgeInsets.only(left: 8.0),
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        "${data["title"]}",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 14),
-                        maxLines: 2,
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(left: 8.0),
-                      height: 30,
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text("${data["author"]["nickname"]}"),
-                          Text("${data["date"]}"),
-                          Text("${data["comment_count"]}评论"),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              Expanded(
-                flex: 2,
-                child: Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Image.network(
-                    widgets[i]["custom_fields"]["thumb_c"][0],
-                    fit: BoxFit.fill,
-                    height: 60,
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Expanded(
+            flex: 5,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  height: 30,
+                  padding: EdgeInsets.only(left: 8.0),
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    "${data["title"]}",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                    maxLines: 2,
                   ),
                 ),
-              )
-            ],
+                Container(
+                  padding: EdgeInsets.only(left: 8.0),
+                  height: 30,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text("${data["author"]["nickname"]}"),
+                      Text("${data["date"]}"),
+                      Text("${data["comment_count"]}评论"),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Image.network(
+                widgets[i]["custom_fields"]["thumb_c"][0],
+                fit: BoxFit.fill,
+                height: 60,
+              ),
+            ),
+          )
+        ],
       );
     } else {
-      return _getOnLoadMoreWidget();
+      return getOnLoadMoreWidget();
     }
   }
 
@@ -156,13 +134,12 @@ class NewsState extends State<News> {
             controller: _scrollController,
             itemCount: widgets.length + 1,
             itemBuilder: (BuildContext context, int position) {
-              return
-                Column(
-                  children: <Widget>[
-                    getRow(position),
-                    Divider(),
-                  ],
-                );
+              return Column(
+                children: <Widget>[
+                  getRow(position),
+                  Divider(),
+                ],
+              );
             }));
   }
 

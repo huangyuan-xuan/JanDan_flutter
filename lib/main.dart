@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
 import 'MyDrawer.dart';
-import 'joke.dart';
-import 'news.dart';
 import 'bored_image.dart';
 import 'girls_image.dart';
+import 'joke.dart';
+import 'news.dart';
 
 void main() {
 //  debugPaintSizeEnabled = true;

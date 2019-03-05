@@ -4,6 +4,8 @@ import 'package:transparent_image/transparent_image.dart';
 import 'dart:io';
 import 'dart:convert';
 
+import 'public_widget.dart';
+
 class GirlsImage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -75,25 +77,26 @@ class GirlsImageState extends State<GirlsImage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text("${data["comment_author"]}",style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),),
-              Text("${data["comment_date"]}",style: TextStyle(
-                  fontSize: 12
-              ),),
+              Text(
+                "${data["comment_author"]}",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                "${data["comment_date"]}",
+                style: TextStyle(fontSize: 12),
+              ),
               Offstage(
                 offstage: data["text_content"] == null ||
                     data["text_content"].toString().trim().length == 0,
-                child: Text("${data["text_content"].toString().trim()}",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      height: 1.2
-                  ),
+                child: Text(
+                  "${data["text_content"].toString().trim()}",
+                  style: TextStyle(fontWeight: FontWeight.bold, height: 1.2),
                 ),
               ),
               FadeInImage.memoryNetwork(
-                  placeholder: kTransparentImage,
-                  image:data["pics"][0]),
+                  placeholder: kTransparentImage, image: data["pics"][0]),
               Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -131,30 +134,8 @@ class GirlsImageState extends State<GirlsImage> {
         ),
       );
     } else {
-      return _getOnLoadMoreWidget();
+      return getOnLoadMoreWidget();
     }
-  }
-
-  // 加载更多时显示的组件
-  Widget _getOnLoadMoreWidget() {
-    return Center(
-      child: Padding(
-        padding: EdgeInsets.all(10.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              '加载中...     ',
-              style: TextStyle(fontSize: 16.0),
-            ),
-            CircularProgressIndicator(
-              strokeWidth: 1.0,
-            )
-          ],
-        ),
-      ),
-    );
   }
 
   @override
