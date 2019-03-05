@@ -81,15 +81,20 @@ class _JokeState extends State<Joke> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Text(
-                "${widgets[i]["comment_date"]}",
-                style: TextStyle(fontSize: 14, color: Colors.black54),
+              Padding(
+                padding: EdgeInsets.only(top: 10.0, bottom: 8.0),
+                child: Text(
+                  "${widgets[i]["comment_date"]}",
+                  style: TextStyle(fontSize: 14, color: Colors.black54,height: 1.1),
+                ),
               ),
               Text(
                 "${widgets[i]["text_content"]}",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
               Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Row(
                     children: <Widget>[

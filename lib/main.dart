@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'MyDrawer.dart';
 import 'joke.dart';
+import 'news.dart';
 import'package:flutter/rendering.dart';
 void main() {
 //  debugPaintSizeEnabled = true;
@@ -51,10 +52,7 @@ class JanDanAppState extends State<JanDanApp>
       body: TabBarView(
         controller: _tabController,
         children: <Widget>[
-          Container(
-            alignment: Alignment.center,
-            child: Text("新鲜事", textScaleFactor: 5,),
-          ),
+          News(),
           Container(
             alignment: Alignment.center,
             child: Text("流行", textScaleFactor: 5,),
@@ -73,12 +71,3 @@ class JanDanAppState extends State<JanDanApp>
     );
   }
 }
-
-
-//controller: _tabController,
-//children: tabs.map((e) {
-//return Container(
-//alignment: Alignment.center,
-//child: Text(e, textScaleFactor: 5),
-//);
-//}).toList()
