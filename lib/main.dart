@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import'package:flutter/rendering.dart';
+
 import 'MyDrawer.dart';
 import 'joke.dart';
 import 'news.dart';
-import'package:flutter/rendering.dart';
+import 'bored_image.dart';
+import 'girls_image.dart';
+
 void main() {
 //  debugPaintSizeEnabled = true;
   runApp(App());
@@ -29,7 +33,7 @@ class JanDanApp extends StatefulWidget {
 class JanDanAppState extends State<JanDanApp>
     with SingleTickerProviderStateMixin {
   TabController _tabController; //需要定义一个Controller
-  List tabs = ["新鲜事", "流行", "无聊图", "段子", "妹子图"];
+  List tabs = ["新鲜事", "无聊图", "段子", "妹子图"];
 
   @override
   void initState() {
@@ -53,19 +57,9 @@ class JanDanAppState extends State<JanDanApp>
         controller: _tabController,
         children: <Widget>[
           News(),
-          Container(
-            alignment: Alignment.center,
-            child: Text("流行", textScaleFactor: 5,),
-          ),
-          Container(
-            alignment: Alignment.center,
-            child: Text("无聊图", textScaleFactor: 5,),
-          ),
+          BoredImage(),
           Joke(),
-          Container(
-            alignment: Alignment.center,
-            child: Text("妹子图", textScaleFactor: 5,),
-          ),
+          GirlsImage(),
         ],
       ),
     );

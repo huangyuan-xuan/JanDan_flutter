@@ -1,18 +1,16 @@
-import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'dart:io';
+import 'dart:convert';
 
-class Joke extends StatefulWidget {
-  Joke({Key key}) : super(key: key);
-
+class BoredImage extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() {
-    return new _JokeState();
+  BoredImageState createState() {
+    return BoredImageState();
   }
 }
 
-class _JokeState extends State<Joke> {
+class BoredImageState extends State<BoredImage> {
   List widgets = [];
   var pageNumber = 1;
   ScrollController _scrollController = new ScrollController();
@@ -20,6 +18,7 @@ class _JokeState extends State<Joke> {
 
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
@@ -30,7 +29,7 @@ class _JokeState extends State<Joke> {
     _loadData(false);
   }
 
-  Future<void> _loadData(bool isLoadMore) async {
+  _loadData(bool isLoadMore) async {
     if (isLoading) {
       return null;
     } else {
@@ -41,16 +40,20 @@ class _JokeState extends State<Joke> {
         }
       });
     }
+
+    String url =
+        "http://i.jandan.net/?oxwlxojflwblxbsapi=jandan.get_pic_comments&page=$pageNumber";
+
     var httpClient = new HttpClient();
-    String dataUrl =
-        "http://i.jandan.net/?oxwlxojflwblxbsapi=jandan.get_duan_comments&page=$pageNumber";
-    var request = await httpClient.getUrl(Uri.parse(dataUrl));
+    var request = await httpClient.getUrl(Uri.parse(url));
     var response = await request.close();
+
     if (response.statusCode == HttpStatus.ok) {
       var jsonStr = await response.transform(utf8.decoder).join();
+
       setState(() {
-        isLoading = false;
         pageNumber++;
+        isLoading = false;
         if (isLoadMore) {
           widgets.addAll(json.decode(jsonStr)["comments"]);
         } else {
@@ -67,34 +70,33 @@ class _JokeState extends State<Joke> {
     }
   }
 
-  Widget getRow(int i) {
+  Widget _getRow(int i) {
     if (i < widgets.length) {
-      return new Card(
+      var data = widgets[i];
+      return Card(
         child: Container(
-          padding: EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(8.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(
-                "${widgets[i]["comment_author"]}",
+              Text("${data["comment_author"]}",style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),),
+              Text("${data["comment_date"]}",style: TextStyle(
+                fontSize: 12
+              ),),
+              Offstage(
+                offstage: data["text_content"] == null ||
+                    data["text_content"].toString().trim().length == 0,
+                child: Text("${data["text_content"].toString().trim()}",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
+                  height: 1.2
+                ),
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.only(top: 10.0, bottom: 8.0),
-                child: Text(
-                  "${widgets[i]["comment_date"]}",
-                  style: TextStyle(
-                      fontSize: 14, color: Colors.black54, height: 1.1),
-                ),
-              ),
-              Text(
-                "${widgets[i]["text_content"]}",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
+              Image.network(data["pics"][0]),
               Row(
-
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
@@ -159,14 +161,14 @@ class _JokeState extends State<Joke> {
 
   @override
   Widget build(BuildContext context) {
-    return  RefreshIndicator(
-        onRefresh: () => _loadData(false),
-        child: new ListView.builder(
-            controller: _scrollController,
-            itemCount: widgets.length + 1,
-            itemBuilder: (BuildContext context, int position) {
-              return getRow(position);
-            }));
+    return RefreshIndicator(
+      onRefresh: () => _loadData(false),
+      child: ListView.builder(
+          itemCount: widgets.length + 1,
+          itemBuilder: (BuildContext context, int position) {
+            return _getRow(position);
+          }),
+    );
   }
 
   @override

@@ -34,12 +34,12 @@ class NewsState extends State<News> {
     } else {
       setState(() {
         isLoading = true;
+        if (!isLoadMore) {
+          pageNumber = 1;
+        }
       });
     }
     var httpClient = new HttpClient();
-    if (!isLoadMore) {
-      pageNumber = 1;
-    }
     String dataUrl =
         "http://i.jandan.net/?oxwlxojflwblxbsapi=get_recent_posts&include=url,date,tags,author,title,excerpt,comment_count,comment_status,custom_fields&custom_fields=thumb_c,views&dev=1&page=$pageNumber";
     var request = await httpClient.getUrl(Uri.parse(dataUrl));
