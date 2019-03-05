@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'MyDrawer.dart';
 import 'joke.dart';
-
-void main() => runApp(App());
+import'package:flutter/rendering.dart';
+void main() {
+//  debugPaintSizeEnabled = true;
+  runApp(App());
+}
 
 class App extends StatelessWidget {
   @override
@@ -50,23 +53,23 @@ class JanDanAppState extends State<JanDanApp>
         children: <Widget>[
           Container(
             alignment: Alignment.center,
-            child: Text("新鲜事",textScaleFactor: 5,),
+            child: Text("新鲜事", textScaleFactor: 5,),
           ),
           Container(
             alignment: Alignment.center,
-            child: Text("流行",textScaleFactor: 5,),
+            child: Text("流行", textScaleFactor: 5,),
           ),
           Container(
             alignment: Alignment.center,
-            child: Text("无聊图",textScaleFactor: 5,),
+            child: Text("无聊图", textScaleFactor: 5,),
           ),
           Joke(),
           Container(
             alignment: Alignment.center,
-            child: Text("妹子图",textScaleFactor: 5,),
+            child: Text("妹子图", textScaleFactor: 5,),
           ),
         ],
-         ),
+      ),
     );
   }
 }
