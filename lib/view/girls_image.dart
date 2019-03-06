@@ -44,7 +44,7 @@ class GirlsImageState extends State<GirlsImage> {
     }
     var httpClient = new HttpClient();
     String dataUrl =
-        "http://i.jandan.net/?oxwlxojflwblxbsapi=jandan.get_ooxx_comments&page=$pageNumber";
+        "https://i.jandan.net/?oxwlxojflwblxbsapi=jandan.get_ooxx_comments&page=$pageNumber";
     var request = await httpClient.getUrl(Uri.parse(dataUrl));
     var response = await request.close();
     if (response.statusCode == HttpStatus.ok) {

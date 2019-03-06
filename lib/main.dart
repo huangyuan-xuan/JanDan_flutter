@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'package:jandan_flutter/view/MyDrawer.dart';
+import 'package:jandan_flutter/view/my_drawer.dart';
 import 'package:jandan_flutter/view/bored_image.dart';
 import 'package:jandan_flutter/view/girls_image.dart';
 import 'package:jandan_flutter/view/joke.dart';
 import 'package:jandan_flutter/view/news.dart';
+import 'package:jandan_flutter/bean/base_result_bean.dart';
 
 void main() {
 //  debugPaintSizeEnabled = true;
@@ -33,7 +34,6 @@ class JanDanAppState extends State<JanDanApp>
     with SingleTickerProviderStateMixin {
   TabController _tabController; //需要定义一个Controller
   List tabs = ["新鲜事", "无聊图", "段子", "妹子图"];
-
   @override
   void initState() {
     super.initState();

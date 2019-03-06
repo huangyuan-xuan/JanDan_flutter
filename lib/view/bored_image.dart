@@ -44,7 +44,7 @@ class BoredImageState extends State<BoredImage> {
     }
 
     String url =
-        "http://i.jandan.net/?oxwlxojflwblxbsapi=jandan.get_pic_comments&page=$pageNumber";
+        "https://i.jandan.net/?oxwlxojflwblxbsapi=jandan.get_pic_comments&page=$pageNumber";
 
     var httpClient = new HttpClient();
     var request = await httpClient.getUrl(Uri.parse(url));

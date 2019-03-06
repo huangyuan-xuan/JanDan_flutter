@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:jandan_flutter/view/public_widget.dart';
+import 'package:jandan_flutter/bean/joke_bean.dart';
 
 class Joke extends StatefulWidget {
   Joke({Key key}) : super(key: key);
@@ -15,7 +16,10 @@ class Joke extends StatefulWidget {
 }
 
 class _JokeState extends State<Joke> {
-  List widgets = [];
+  List<JokeBean> widgets = [];
+  JokeModel jokeModel;
+
+
   var pageNumber = 1;
   ScrollController _scrollController = new ScrollController();
   bool isLoading = false;
@@ -45,18 +49,19 @@ class _JokeState extends State<Joke> {
     }
     var httpClient = new HttpClient();
     String dataUrl =
-        "http://i.jandan.net/?oxwlxojflwblxbsapi=jandan.get_duan_comments&page=$pageNumber";
+        "https://i.jandan.net/?oxwlxojflwblxbsapi=jandan.get_duan_comments&page=$pageNumber";
     var request = await httpClient.getUrl(Uri.parse(dataUrl));
     var response = await request.close();
     if (response.statusCode == HttpStatus.ok) {
       var jsonStr = await response.transform(utf8.decoder).join();
+      jokeModel = JokeModel.fromJson(json.decode(jsonStr));
       setState(() {
         isLoading = false;
         pageNumber++;
         if (isLoadMore) {
-          widgets.addAll(json.decode(jsonStr)["comments"]);
+          widgets.addAll(jokeModel.comments);
         } else {
-          widgets = json.decode(jsonStr)["comments"];
+          widgets = jokeModel.comments;
         }
       });
     } else {
@@ -78,7 +83,7 @@ class _JokeState extends State<Joke> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                "${widgets[i]["comment_author"]}",
+                "${widgets[i].author}",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
@@ -86,13 +91,13 @@ class _JokeState extends State<Joke> {
               Padding(
                 padding: EdgeInsets.only(top: 10.0, bottom: 8.0),
                 child: Text(
-                  "${widgets[i]["comment_date"]}",
+                  "${widgets[i].date}",
                   style: TextStyle(
                       fontSize: 14, color: Colors.black54, height: 1.1),
                 ),
               ),
               Text(
-                "${widgets[i]["text_content"]}",
+                "${widgets[i].content}",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               Row(
@@ -106,7 +111,7 @@ class _JokeState extends State<Joke> {
                         child: Row(
                           children: <Widget>[
                             Text("OO"),
-                            Text("${widgets[i]["vote_positive"]}"),
+                            Text("${widgets[i].votePositive}"),
                           ],
                         ),
                       ),
@@ -115,13 +120,13 @@ class _JokeState extends State<Joke> {
                   Row(
                     children: <Widget>[
                       Text("XX"),
-                      Text("${widgets[i]["vote_negative"]}"),
+                      Text("${widgets[i].voteNegative}"),
                     ],
                   ),
                   Row(
                     children: <Widget>[
                       Text("吐槽"),
-                      Text("${widgets[i]["vote_negative"]}"),
+                      Text("${widgets[i].subCommentCount}"),
                     ],
                   ),
                   Icon(Icons.more_horiz),
