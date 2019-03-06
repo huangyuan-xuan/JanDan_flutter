@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:jandan_flutter/view/public_widget.dart';
+import 'package:jandan_flutter/bean/news_bean.dart';
 
 class News extends StatefulWidget {
   @override
@@ -13,7 +14,7 @@ class News extends StatefulWidget {
 }
 
 class NewsState extends State<News> {
-  List widgets = [];
+  List<NewsBean> widgets = [];
   var pageNumber = 1;
   ScrollController _scrollController = new ScrollController();
   bool isLoading = false;
@@ -48,14 +49,14 @@ class NewsState extends State<News> {
     var response = await request.close();
     if (response.statusCode == HttpStatus.ok) {
       var jsonStr = await response.transform(utf8.decoder).join();
+      var newsModel = NewsModel.fromJson(json.decode(jsonStr));
       setState(() {
         isLoading = false;
         pageNumber++;
         if (isLoadMore) {
-          widgets.addAll(json.decode(jsonStr)["posts"]);
+          widgets.addAll(newsModel.posts);
         } else {
-          widgets = json.decode(jsonStr)["posts"];
-          print(widgets.length);
+          widgets = newsModel.posts;
         }
       });
     } else {
@@ -87,7 +88,7 @@ class NewsState extends State<News> {
                   padding: EdgeInsets.only(left: 8.0),
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "${data["title"]}",
+                    data.title,
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                     maxLines: 2,
                   ),
@@ -99,9 +100,9 @@ class NewsState extends State<News> {
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text("${data["author"]["nickname"]}"),
-                      Text("${data["date"]}"),
-                      Text("${data["comment_count"]}评论"),
+                      Text(data.author.nickname),
+                      Text(data.date),
+                      Text("${data.commentCount}评论"),
                     ],
                   ),
                 )
@@ -113,7 +114,7 @@ class NewsState extends State<News> {
             child: Padding(
               padding: EdgeInsets.all(8.0),
               child: Image.network(
-                widgets[i]["custom_fields"]["thumb_c"][0],
+                data.customFields.thumb[0],
                 fit: BoxFit.fill,
                 height: 60,
               ),

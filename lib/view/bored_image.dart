@@ -4,6 +4,7 @@ import 'package:transparent_image/transparent_image.dart';
 import 'dart:io';
 import 'dart:convert';
 import 'package:jandan_flutter/view/public_widget.dart';
+import 'package:jandan_flutter/bean/bored_image_bean.dart';
 
 class BoredImage extends StatefulWidget {
   @override
@@ -13,7 +14,7 @@ class BoredImage extends StatefulWidget {
 }
 
 class BoredImageState extends State<BoredImage> {
-  List widgets = [];
+  List<BoredImageBean> widgets = [];
   var pageNumber = 1;
   ScrollController _scrollController = new ScrollController();
   bool isLoading = false;
@@ -52,14 +53,14 @@ class BoredImageState extends State<BoredImage> {
 
     if (response.statusCode == HttpStatus.ok) {
       var jsonStr = await response.transform(utf8.decoder).join();
-
+      var boredImageModel = BoredImageModel.fromJson(json.decode(jsonStr));
       setState(() {
         pageNumber++;
         isLoading = false;
         if (isLoadMore) {
-          widgets.addAll(json.decode(jsonStr)["comments"]);
+          widgets.addAll(boredImageModel.comments);
         } else {
-          widgets = json.decode(jsonStr)["comments"];
+          widgets = boredImageModel.comments;
         }
       });
     } else {
@@ -82,54 +83,32 @@ class BoredImageState extends State<BoredImage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                "${data["comment_author"]}",
+                "${data.author}",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
               ),
               Text(
-                "${data["comment_date"]}",
+                "${data.date}",
                 style: TextStyle(fontSize: 12),
               ),
               Offstage(
-                offstage: data["text_content"] == null ||
-                    data["text_content"].toString().trim().length == 0,
+                offstage: data.content == null ||
+                    data.content .toString().trim().length == 0,
                 child: Text(
-                  "${data["text_content"].toString().trim()}",
+                  "${data.content.toString().trim()}",
                   style: TextStyle(fontWeight: FontWeight.bold, height: 1.2),
                 ),
               ),
               FadeInImage.memoryNetwork(
-                  placeholder: kTransparentImage, image: data["pics"][0]),
+                  placeholder: kTransparentImage, image: data.pics[0]),
               Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(right: 8.0),
-                        child: Row(
-                          children: <Widget>[
-                            Text("OO"),
-                            Text("${widgets[i]["vote_positive"]}"),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Text("XX"),
-                      Text("${widgets[i]["vote_negative"]}"),
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Text("吐槽"),
-                      Text("${widgets[i]["vote_negative"]}"),
-                    ],
-                  ),
+                  Text("OO  ${data.votePositive}"),
+                  Text("XX  ${data.voteNegative}"),
+                  Text("吐槽  ${data.subCommentCount}"),
                   Icon(Icons.more_horiz),
                 ],
               ),

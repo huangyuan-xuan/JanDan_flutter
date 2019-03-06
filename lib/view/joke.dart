@@ -17,7 +17,6 @@ class Joke extends StatefulWidget {
 
 class _JokeState extends State<Joke> {
   List<JokeBean> widgets = [];
-  JokeModel jokeModel;
 
 
   var pageNumber = 1;
@@ -54,7 +53,7 @@ class _JokeState extends State<Joke> {
     var response = await request.close();
     if (response.statusCode == HttpStatus.ok) {
       var jsonStr = await response.transform(utf8.decoder).join();
-      jokeModel = JokeModel.fromJson(json.decode(jsonStr));
+      var jokeModel = JokeModel.fromJson(json.decode(jsonStr));
       setState(() {
         isLoading = false;
         pageNumber++;
@@ -76,6 +75,9 @@ class _JokeState extends State<Joke> {
 
   Widget getRow(int i) {
     if (i < widgets.length) {
+      var data = widgets[i];
+
+
       return new Card(
         child: Container(
           padding: EdgeInsets.all(16.0),
@@ -104,31 +106,9 @@ class _JokeState extends State<Joke> {
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(right: 8.0),
-                        child: Row(
-                          children: <Widget>[
-                            Text("OO"),
-                            Text("${widgets[i].votePositive}"),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Text("XX"),
-                      Text("${widgets[i].voteNegative}"),
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Text("吐槽"),
-                      Text("${widgets[i].subCommentCount}"),
-                    ],
-                  ),
+                  Text("OO  ${data.votePositive}"),
+                  Text("XX  ${data.voteNegative}"),
+                  Text("吐槽  ${data.subCommentCount}"),
                   Icon(Icons.more_horiz),
                 ],
               ),
