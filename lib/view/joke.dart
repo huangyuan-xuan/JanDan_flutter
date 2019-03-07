@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:jandan_flutter/view/public_widget.dart';
 import 'package:jandan_flutter/bean/joke_bean.dart';
+import 'tap_change_color.dart';
 
 class Joke extends StatefulWidget {
   Joke({Key key}) : super(key: key);
@@ -15,17 +16,20 @@ class Joke extends StatefulWidget {
   }
 }
 
-class _JokeState extends State<Joke> {
+class _JokeState extends State<Joke> with TickerProviderStateMixin {
   List<JokeBean> widgets = [];
-
 
   var pageNumber = 1;
   ScrollController _scrollController = new ScrollController();
   bool isLoading = false;
 
+  AnimationController animationController;
+  Animation<double> animation;
+
   @override
   void initState() {
     super.initState();
+
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
@@ -73,10 +77,25 @@ class _JokeState extends State<Joke> {
     }
   }
 
+
+
+
   Widget getRow(int i) {
     if (i < widgets.length) {
       var data = widgets[i];
 
+      animationController = new AnimationController(
+          vsync: this, duration: const Duration(seconds: 3));
+
+      animation = new Tween(begin: 14.0, end: 30.0).animate(animationController)
+        ..addStatusListener((state) {
+          Fluttertoast.showToast(msg: state.toString());
+        })
+        ..addListener(() {
+          setState(() {});
+        });
+
+      var textColor = Colors.black54;
 
       return new Card(
         child: Container(
@@ -106,9 +125,9 @@ class _JokeState extends State<Joke> {
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text("OO  ${data.votePositive}"),
-                  Text("XX  ${data.voteNegative}"),
-                  Text("吐槽  ${data.subCommentCount}"),
+                  TapChangeColorText(text: "OO ${data.votePositive}"),
+                  TapChangeColorText(text: "XX ${data.voteNegative}"),
+                  Text("吐槽 ${data.subCommentCount}"),
                   Icon(Icons.more_horiz),
                 ],
               ),

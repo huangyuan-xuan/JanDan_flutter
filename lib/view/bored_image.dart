@@ -5,6 +5,7 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:jandan_flutter/view/public_widget.dart';
 import 'package:jandan_flutter/bean/bored_image_bean.dart';
+import 'tap_change_color.dart';
 
 class BoredImage extends StatefulWidget {
   @override
@@ -106,9 +107,9 @@ class BoredImageState extends State<BoredImage> {
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text("OO  ${data.votePositive}"),
-                  Text("XX  ${data.voteNegative}"),
-                  Text("吐槽  ${data.subCommentCount}"),
+                  TapChangeColorText(text: "OO ${data.votePositive}"),
+                  TapChangeColorText(text: "XX ${data.voteNegative}"),
+                  Text("吐槽 ${data.subCommentCount}"),
                   Icon(Icons.more_horiz),
                 ],
               ),
