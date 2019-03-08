@@ -89,13 +89,10 @@ class _JokeState extends State<Joke> with TickerProviderStateMixin {
 
       animation = new Tween(begin: 14.0, end: 30.0).animate(animationController)
         ..addStatusListener((state) {
-          Fluttertoast.showToast(msg: state.toString());
         })
         ..addListener(() {
           setState(() {});
         });
-
-      var textColor = Colors.black54;
 
       return new Card(
         child: Container(

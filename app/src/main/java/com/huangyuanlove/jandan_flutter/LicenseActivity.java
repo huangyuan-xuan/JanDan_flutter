@@ -1,17 +1,14 @@
 package com.huangyuanlove.jandan_flutter;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
-import io.flutter.facade.Flutter;
-
-public class MainActivity extends AppCompatActivity {
+public class LicenseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setContentView( Flutter.createView(this,getLifecycle(),"main"));
-
+        setContentView(R.layout.activity_license);
     }
 }
