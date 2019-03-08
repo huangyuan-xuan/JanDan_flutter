@@ -26,19 +26,19 @@ public class MainActivity extends AppCompatActivity {
         initChannel(flutterView);
 
         setContentView(flutterView);
-        simpleDateFormat = new SimpleDateFormat("YYYY-MM-DD HH:mm:ss");
-        CountDownTimer countDownTimer = new CountDownTimer(10000,1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                mChannel.invokeMethod("time",simpleDateFormat.format(new Date()));
-            }
-
-            @Override
-            public void onFinish() {
-                mChannel.invokeMethod("time","done");
-            }
-        };
-        countDownTimer.start();
+//        simpleDateFormat = new SimpleDateFormat("YYYY-MM-DD HH:mm:ss");
+//        CountDownTimer countDownTimer = new CountDownTimer(10000,1000) {
+//            @Override
+//            public void onTick(long millisUntilFinished) {
+//                mChannel.invokeMethod("time",simpleDateFormat.format(new Date()));
+//            }
+//
+//            @Override
+//            public void onFinish() {
+//                mChannel.invokeMethod("time","done");
+//            }
+//        };
+//        countDownTimer.start();
 
 
     }
