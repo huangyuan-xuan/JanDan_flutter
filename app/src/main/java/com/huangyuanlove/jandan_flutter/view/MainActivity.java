@@ -1,4 +1,4 @@
-package com.huangyuanlove.jandan_flutter;
+package com.huangyuanlove.jandan_flutter.view;
 
 import android.content.Intent;
 import android.net.Uri;
