@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:ui';
 import 'view/my_drawer.dart';
 import 'view/bored_image.dart';
@@ -9,6 +11,7 @@ import 'view/news.dart';
 void main() {
 //  debugPaintSizeEnabled = true;
   runApp(_widgetForRoute(window.defaultRouteName));
+//runApp(App());
 }
 
 Widget _widgetForRoute(String route) {
@@ -45,12 +48,27 @@ class JanDanAppState extends State<JanDanApp>
   TabController _tabController; //需要定义一个Controller
   List tabs = ["新鲜事", "无聊图", "段子", "妹子图"];
 
+//  MethodChannel channel;
+
+
   @override
   void initState() {
+
+//    channel = const MethodChannel('my_flutter/plugin');
+//    channel.setMethodCallHandler(methodHandler);
+
     super.initState();
-    // 创建Controller
     _tabController = TabController(length: tabs.length, vsync: this);
   }
+
+  // 接收原生平台的方法调用处理
+  Future methodHandler(MethodCall call) async {
+    print("${call.method},${call.arguments}");
+
+//    Fluttertoast.showToast(msg: "${call.method},${call.arguments}");
+
+  }
+
 
   @override
   Widget build(BuildContext context) {

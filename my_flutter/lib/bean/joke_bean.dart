@@ -17,7 +17,7 @@ class JokeModel extends BaseResultBean{
 
 @JsonSerializable()
 class JokeBean {
-  JokeBean(){}
+  JokeBean();
 
   @JsonKey(name: "comment_author")
   String author;

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/gestures.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter/services.dart';
+
 class MyDrawer extends StatelessWidget {
-  const MyDrawer({
+   MyDrawer({
     Key key,
   }) : super(key: key);
+
+  MethodChannel channel = const MethodChannel('my_flutter/plugin');
 
   @override
   Widget build(BuildContext context) {
@@ -39,76 +41,69 @@ class MyDrawer extends StatelessWidget {
                 children: <Widget>[
                   ListTile(
                     leading: const Icon(Icons.all_inclusive),
-                    title: ClickableText(
-                      content: "https://blog.huangyuanlove.com",
-                    ),
+                    title: Text("博客",style: TextStyle(
+                      color: Colors.blue,
+                    ),),
+                      onTap: () async {
+                        try {
+
+                          await channel.invokeMethod('to_webview',"https://blog.huangyuanlove.com");
+                          // 将 dynamic 类型转换成需要的类型（与平台端返回值给定的类型要一致）
+                        } on PlatformException catch (e) {
+                          print(e.message);
+                        }
+                      },
+//
                   ),
                   ListTile(
                     leading: const Icon(Icons.insert_link),
-                    title: ClickableText(
-                      content: "https://github.com/huangyuanlove",
-                    ),
+                    title: Text("GitHub",style: TextStyle(
+                      color: Colors.blue,
+                    )),
+                    onTap: () async {
+                      try {
+
+                        await channel.invokeMethod('to_webview',"https://github.com/huangyuanlove");
+                        // 将 dynamic 类型转换成需要的类型（与平台端返回值给定的类型要一致）
+                      } on PlatformException catch (e) {
+                        print(e.message);
+                      }
+                    },
                   ),
                   ListTile(
                     leading: const Icon(Icons.book),
-                    title: ClickableText(
-                        content:
-                            "https://huangyuan.gitbook.io/learning-record"),
+                    title: Text("GitBook",style: TextStyle(
+                      color: Colors.blue,
+                    )),
+                    onTap: () async {
+                      try {
+
+                        await channel.invokeMethod('to_webview',"https://huangyuan.gitbook.io/learning-record");
+                        // 将 dynamic 类型转换成需要的类型（与平台端返回值给定的类型要一致）
+                      } on PlatformException catch (e) {
+                        print(e.message);
+                      }
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.label_important),
+                    title: Text("所使用的开源框架",style: TextStyle(
+                      color: Colors.blue,
+                    )),
+                    onTap: () async {
+                      try {
+
+                        await channel.invokeMethod('to_license');
+                        // 将 dynamic 类型转换成需要的类型（与平台端返回值给定的类型要一致）
+                      } on PlatformException catch (e) {
+                        print(e.message);
+                      }
+                    },
                   )
                 ],
               ))
             ],
           )),
-    );
-  }
-}
-
-class ClickableText extends StatefulWidget {
-  ClickableText({Key key, this.content}) : super(key: key);
-
-  final String content;
-
-  @override
-  _ClickableTextState createState() {
-    return new _ClickableTextState();
-  }
-}
-
-class _ClickableTextState
-    extends State<ClickableText> {
-  TapGestureRecognizer _tapGestureRecognizer = new TapGestureRecognizer();
-
-  _launchURL(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
-
-
-  @override
-  void dispose() {
-    //用到GestureRecognizer的话一定要调用其dispose方法释放资源
-    _tapGestureRecognizer.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text.rich(TextSpan(children: [
-        TextSpan(
-          text: widget.content,
-          style: TextStyle(
-            color: Colors.blue,
-          ),
-          recognizer: _tapGestureRecognizer
-            ..onTap = () {
-            _launchURL(widget.content);
-            },
-        ),
-      ])),
     );
   }
 }
