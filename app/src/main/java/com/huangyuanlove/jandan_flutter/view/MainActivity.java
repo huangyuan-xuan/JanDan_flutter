@@ -25,21 +25,8 @@ public class MainActivity extends AppCompatActivity {
         FlutterView flutterView = Flutter.createView(this, getLifecycle(), "main");
         initChannel(flutterView);
 
-        setContentView(flutterView);
-//        simpleDateFormat = new SimpleDateFormat("YYYY-MM-DD HH:mm:ss");
-//        CountDownTimer countDownTimer = new CountDownTimer(10000,1000) {
-//            @Override
-//            public void onTick(long millisUntilFinished) {
-//                mChannel.invokeMethod("time",simpleDateFormat.format(new Date()));
-//            }
-//
-//            @Override
-//            public void onFinish() {
-//                mChannel.invokeMethod("time","done");
-//            }
-//        };
-//        countDownTimer.start();
 
+        setContentView(flutterView);
 
     }
 
@@ -76,19 +63,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-//        mChannel.setMethodCallHandler((MethodCall methodCall, MethodChannel.Result result) -> {
-//            switch (methodCall.method) {
-//                case "action1":
-//
-//                    break;
-//                case "action2":
-//
-//                    result.success("jump");
-//                    break;
-//                default:
-//                    break;
-//            }
-//        });
     }
 }
