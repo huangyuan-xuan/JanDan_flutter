@@ -38,5 +38,13 @@ class JokeBean {
   String subCommentCount;
   factory JokeBean.fromJson(Map<String, dynamic> json) => _$JokeBeanFromJson(json);
   Map<String, dynamic> toJson() => _$JokeBeanToJson(this);
+
+
+  @override
+  String toString() {
+    // TODO: implement toString
+    return _$JokeBeanToJson(this).toString();
+  }
+
 }
 

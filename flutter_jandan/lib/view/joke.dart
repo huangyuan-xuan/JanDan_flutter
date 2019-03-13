@@ -1,11 +1,10 @@
-import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:flutter_jandan/view/public_widget.dart';
 import 'package:flutter_jandan/bean/joke_bean.dart';
 import 'tap_change_color.dart';
+import 'package:dio/dio.dart';
 
 class Joke extends StatefulWidget {
   Joke({Key key}) : super(key: key);
@@ -32,13 +31,13 @@ class _JokeState extends State<Joke> with TickerProviderStateMixin {
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        _loadData(true);
+        getHttp(true);
       }
     });
-    _loadData(false);
+    getHttp(false);
   }
 
-  Future<void> _loadData(bool isLoadMore) async {
+  Future<void> getHttp(bool isLoadMore) async {
     if (isLoading) {
       return null;
     } else {
@@ -49,36 +48,39 @@ class _JokeState extends State<Joke> with TickerProviderStateMixin {
         }
       });
     }
-    var httpClient = new HttpClient();
     String dataUrl =
         "https://i.jandan.net/?oxwlxojflwblxbsapi=jandan.get_duan_comments&page=$pageNumber";
-    var request = await httpClient.getUrl(Uri.parse(dataUrl));
-    var response = await request.close();
-    if (response.statusCode == HttpStatus.ok) {
-      var jsonStr = await response.transform(utf8.decoder).join();
-      var jokeModel = JokeModel.fromJson(json.decode(jsonStr));
-      setState(() {
+    try {
+      Response<Map<String, dynamic>> response = await Dio().get(dataUrl);
+      if (response.statusCode == 200) {
+        var jokeModel = JokeModel.fromJson(response.data);
+
+        setState(() {
+          isLoading = false;
+          pageNumber++;
+          if (isLoadMore) {
+            widgets.addAll(jokeModel.comments);
+          } else {
+            widgets = jokeModel.comments;
+          }
+        });
+      } else {
         isLoading = false;
-        pageNumber++;
-        if (isLoadMore) {
-          widgets.addAll(jokeModel.comments);
-        } else {
-          widgets = jokeModel.comments;
-        }
-      });
-    } else {
-      isLoading = false;
-      Fluttertoast.showToast(
-          msg: "请求失败",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIos: 1,
-          backgroundColor: Colors.black12);
+        _showError();
+      }
+    } catch (e) {
+      print(e.toString());
     }
   }
 
-
-
+  void _showError() {
+    Fluttertoast.showToast(
+        msg: "请求失败",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIos: 1,
+        backgroundColor: Colors.black12);
+  }
 
   Widget getRow(int i) {
     if (i < widgets.length) {
@@ -88,8 +90,7 @@ class _JokeState extends State<Joke> with TickerProviderStateMixin {
           vsync: this, duration: const Duration(seconds: 3));
 
       animation = new Tween(begin: 14.0, end: 30.0).animate(animationController)
-        ..addStatusListener((state) {
-        })
+        ..addStatusListener((state) {})
         ..addListener(() {
           setState(() {});
         });
@@ -140,7 +141,7 @@ class _JokeState extends State<Joke> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-        onRefresh: () => _loadData(false),
+        onRefresh: () => getHttp(false),
         child: new ListView.builder(
             controller: _scrollController,
             itemCount: widgets.length + 1,
