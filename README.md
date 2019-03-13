@@ -2,6 +2,10 @@
 
 效果图
 ![煎蛋](jan_dan.gif) 
+可以看这个
+flutter从入门到挣扎
+
+https://blog.huangyuanlove.com/2019/03/13/flutter%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%8C%A3%E6%89%8E/
 
 ####  常用控件
 * TabBar
