@@ -1,6 +1,6 @@
 ####  创建flutter module
 命令行执行 `flutter create -t module flutter_module`或者直接使用AS创建。
-路径可以和你的工程平级，也可以是工程的子级。
+路径可以和你的工程平级，也可以是工程的子级。只是在配置`setting.gradle`时注意一下文件夹位置就好。
 #### 修改工程的 setting.gradle
 添加如下代码
 ``` groovy
