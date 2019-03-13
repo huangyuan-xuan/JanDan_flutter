@@ -31,7 +31,7 @@ compileOptions {
 
 如果有support包冲突，则exclude排除一下
 #### Android中加载flutter界面
-找个Activyt，在onCreate中
+找个Activity，在onCreate中
 ``` java
 FlutterView flutterView = Flutter.createView(this, getLifecycle(), "main");
 setContentView(flutterView);
