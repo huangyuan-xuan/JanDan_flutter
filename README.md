@@ -1,5 +1,8 @@
 # 煎蛋flutter
 
+效果图
+![煎蛋](jan_dan.gif) 
+
 ####  常用控件
 * TabBar
 * Card
@@ -11,6 +14,7 @@
 * Row
 * Icon
 * RefreshIndicator
+* ListView
 
 #### json解析及序列化
 ##### 网络请求:'dart:io';
