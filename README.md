@@ -112,7 +112,7 @@ evaluate(new File(
 ))
 ```
 如果flutter module和工程平级，则是上面的代码。
-如果flutter modlule是工程的子目录，则`settingsDir.parentFile,`改为`settingsDir,`
+如果flutter module是工程的子目录，则`settingsDir.parentFile,`改为`settingsDir,`
 ##### 主工程依赖
 ``` groovy
 dependencies {
@@ -124,7 +124,7 @@ dependencies {
 ```
 如果有support包冲突，则exclude排除一下
 ##### Android中加载flutter界面
-找个Activyt，在onCreate中
+找个Activity，在onCreate中
 ``` java
 FlutterView flutterView = Flutter.createView(this, getLifecycle(), "main");
 setContentView(flutterView);
@@ -186,7 +186,7 @@ private void initChannel(FlutterView flutterView) {
             }
         });
 ```
-注意channel的名字，这里设置一个`MethodChannel.MethodCallHandler`,在回调函数中可以通过`methodCall.method`拿到fluter调用的方法名字。result则是回调flutter，这个方法执行的结果。
+注意channel的名字，这里设置一个`MethodChannel.MethodCallHandler`,在回调函数中可以通过`methodCall.method`拿到flutter调用的方法名字。result则是回调flutter，这个方法执行的结果。
 在flutter中
 ``` dart
 //初始化一个channel，名字和Android中一致

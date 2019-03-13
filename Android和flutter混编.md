@@ -11,7 +11,7 @@ evaluate(new File(
 ))
 ```
 如果flutter module和工程平级，则是上面的代码。
-如果flutter modlule是工程的子目录，则`settingsDir.parentFile,`改为`settingsDir,`
+如果flutter module是工程的子目录，则`settingsDir.parentFile,`改为`settingsDir,`
 #### 主工程依赖
 ``` groovy
 dependencies {
