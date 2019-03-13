@@ -21,6 +21,14 @@ dependencies {
     })
     ...
 ```
+设置一下编译用的Java版本
+``` groovy
+compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+```
+
 如果有support包冲突，则exclude排除一下
 #### Android中加载flutter界面
 找个Activyt，在onCreate中
