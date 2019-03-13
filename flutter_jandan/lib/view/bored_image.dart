@@ -22,7 +22,6 @@ class BoredImageState extends State<BoredImage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
@@ -33,16 +32,14 @@ class BoredImageState extends State<BoredImage> {
     _loadData(false);
   }
 
-  _loadData(bool isLoadMore) async {
+  Future<void> _loadData(bool isLoadMore) async {
     if (isLoading) {
       return null;
     } else {
-      setState(() {
-        isLoading = true;
-        if (!isLoadMore) {
-          pageNumber = 1;
-        }
-      });
+      isLoading = true;
+      if (!isLoadMore) {
+        pageNumber = 1;
+      }
     }
 
     String url =
@@ -55,9 +52,9 @@ class BoredImageState extends State<BoredImage> {
     if (response.statusCode == HttpStatus.ok) {
       var jsonStr = await response.transform(utf8.decoder).join();
       var boredImageModel = BoredImageModel.fromJson(json.decode(jsonStr));
+      isLoading = false;
+      pageNumber++;
       setState(() {
-        pageNumber++;
-        isLoading = false;
         if (isLoadMore) {
           widgets.addAll(boredImageModel.comments);
         } else {
@@ -65,6 +62,7 @@ class BoredImageState extends State<BoredImage> {
         }
       });
     } else {
+      isLoading = false;
       Fluttertoast.showToast(
           msg: "请求失败",
           toastLength: Toast.LENGTH_SHORT,
@@ -95,14 +93,13 @@ class BoredImageState extends State<BoredImage> {
               ),
               Offstage(
                 offstage: data.content == null ||
-                    data.content .toString().trim().length == 0,
+                    data.content.toString().trim().length == 0,
                 child: Text(
                   "${data.content.toString().trim()}",
                   style: TextStyle(fontWeight: FontWeight.bold, height: 1.2),
                 ),
               ),
-              FadeInImage.memoryNetwork(
-                  placeholder: kTransparentImage, image: data.pics[0]),
+              FadeInImage.memoryNetwork(placeholder: kTransparentImage, image: data.pics[0]),
               Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -127,6 +124,7 @@ class BoredImageState extends State<BoredImage> {
     return RefreshIndicator(
       onRefresh: () => _loadData(false),
       child: ListView.builder(
+          controller: _scrollController,
           itemCount: widgets.length + 1,
           itemBuilder: (BuildContext context, int position) {
             return _getRow(position);

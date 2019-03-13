@@ -29,7 +29,6 @@ class _JokeState extends State<Joke> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
@@ -68,6 +67,7 @@ class _JokeState extends State<Joke> with TickerProviderStateMixin {
         }
       });
     } else {
+      isLoading = false;
       Fluttertoast.showToast(
           msg: "请求失败",
           toastLength: Toast.LENGTH_SHORT,

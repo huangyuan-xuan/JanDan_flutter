@@ -62,6 +62,7 @@ class GirlsImageState extends State<GirlsImage> {
         }
       });
     } else {
+      isLoading = false;
       Fluttertoast.showToast(
           msg: "请求失败",
           toastLength: Toast.LENGTH_SHORT,
@@ -125,6 +126,7 @@ class GirlsImageState extends State<GirlsImage> {
     return RefreshIndicator(
       onRefresh: () => _loadData(false),
       child: ListView.builder(
+          controller: _scrollController,
           itemCount: widgets.length + 1,
           itemBuilder: (BuildContext context, int position) {
             return _getRow(position);

@@ -60,6 +60,7 @@ class NewsState extends State<News> {
         }
       });
     } else {
+      isLoading = false;
       Fluttertoast.showToast(
           msg: "请求失败",
           toastLength: Toast.LENGTH_SHORT,
