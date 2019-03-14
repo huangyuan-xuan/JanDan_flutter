@@ -105,11 +105,22 @@ class GirlsImageState extends State<GirlsImage> {
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  TapChangeColorText(text: "OO ${data.votePositive}"),
-                  TapChangeColorText(text: "XX ${data.voteNegative}"),
-                  Text("吐槽 ${data.subCommentCount}"),
-
-                  Icon(Icons.more_horiz),
+                  Expanded(
+                    child: TapChangeColorText(text: "OO ${data.votePositive}"),
+                    flex: 1,
+                  ),
+                  Expanded(
+                    child: TapChangeColorText(text: "XX ${data.voteNegative}"),
+                    flex: 1,
+                  ),
+                  Expanded(
+                    child: Text("吐槽 ${data.subCommentCount}"),
+                    flex: 1,
+                  ),
+                  Expanded(
+                    child: Icon(Icons.more_horiz),
+                    flex: 1,
+                  ),
                 ],
               ),
             ],
