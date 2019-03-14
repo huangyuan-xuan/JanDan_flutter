@@ -34,7 +34,7 @@ android {
         targetSdkVersion 28
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 }
 
@@ -45,5 +45,5 @@ flutter {
 dependencies {
     testImplementation 'junit:junit:4.12'
     implementation 'androidx.legacy:legacy-support-v13:1.0.0-beta01'
-    implementation 'androidx.annotation:annotation:1.0.0-beta01'
+    implementation 'androidx.appcompat:appcompat:1.0.0-beta01'
 }
