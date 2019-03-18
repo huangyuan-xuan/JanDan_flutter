@@ -1,5 +1,4 @@
-import 'dart:convert';
-import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -31,6 +30,7 @@ class NewsState extends State<News> {
     _loadData(false);
   }
 
+
   Future<void> _loadData(bool isLoadMore) async {
     if (isLoading) {
       return null;
@@ -42,32 +42,38 @@ class NewsState extends State<News> {
         }
       });
     }
-    var httpClient = new HttpClient();
     String dataUrl =
         "https://i.jandan.net/?oxwlxojflwblxbsapi=get_recent_posts&include=url,date,tags,author,title,excerpt,comment_count,comment_status,custom_fields&custom_fields=thumb_c,views&dev=1&page=$pageNumber";
-    var request = await httpClient.getUrl(Uri.parse(dataUrl));
-    var response = await request.close();
-    if (response.statusCode == HttpStatus.ok) {
-      var jsonStr = await response.transform(utf8.decoder).join();
-      var newsModel = NewsModel.fromJson(json.decode(jsonStr));
-      setState(() {
+    try {
+      Response<Map<String, dynamic>> response = await Dio().get(dataUrl);
+      if (response.statusCode == 200) {
+        var newsModel = NewsModel.fromJson(response.data);
+
+        setState(() {
+          isLoading = false;
+          pageNumber++;
+          if (isLoadMore) {
+            widgets.addAll(newsModel.posts);
+          } else {
+            widgets = newsModel.posts;
+          }
+        });
+      } else {
         isLoading = false;
-        pageNumber++;
-        if (isLoadMore) {
-          widgets.addAll(newsModel.posts);
-        } else {
-          widgets = newsModel.posts;
-        }
-      });
-    } else {
-      isLoading = false;
-      Fluttertoast.showToast(
-          msg: "请求失败",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIos: 1,
-          backgroundColor: Colors.black12);
+        _showError();
+      }
+    } catch (e) {
+      print(e.toString());
     }
+  }
+
+  void _showError() {
+    Fluttertoast.showToast(
+        msg: "请求失败",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIos: 1,
+        backgroundColor: Colors.black12);
   }
 
   Widget getRow(int i) {

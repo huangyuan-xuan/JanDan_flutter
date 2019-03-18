@@ -31,13 +31,13 @@ class _JokeState extends State<Joke> with TickerProviderStateMixin {
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        getHttp(true);
+        _loadData(true);
       }
     });
-    getHttp(false);
+    _loadData(false);
   }
 
-  Future<void> getHttp(bool isLoadMore) async {
+  Future<void> _loadData(bool isLoadMore) async {
     if (isLoading) {
       return null;
     } else {
@@ -153,7 +153,7 @@ class _JokeState extends State<Joke> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-        onRefresh: () => getHttp(false),
+        onRefresh: () => _loadData(false),
         child: new ListView.builder(
             controller: _scrollController,
             itemCount: widgets.length + 1,

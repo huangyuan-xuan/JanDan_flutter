@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:transparent_image/transparent_image.dart';
-import 'dart:io';
-import 'dart:convert';
+import 'package:dio/dio.dart';
+
 
 import 'package:flutter_jandan/view/public_widget.dart';
 import 'package:flutter_jandan/bean/girls_image_bean.dart';
@@ -32,6 +32,8 @@ class GirlsImageState extends State<GirlsImage> {
     _loadData(false);
   }
 
+
+
   Future<void> _loadData(bool isLoadMore) async {
     if (isLoading) {
       return null;
@@ -43,34 +45,40 @@ class GirlsImageState extends State<GirlsImage> {
         }
       });
     }
-    var httpClient = new HttpClient();
     String dataUrl =
         "https://i.jandan.net/?oxwlxojflwblxbsapi=jandan.get_ooxx_comments&page=$pageNumber";
-    var request = await httpClient.getUrl(Uri.parse(dataUrl));
-    var response = await request.close();
-    if (response.statusCode == HttpStatus.ok) {
-      var jsonStr = await response.transform(utf8.decoder).join();
-      var girlsImageModel = GirlsImageModel.fromJson(json.decode(jsonStr));
+    try {
+      Response<Map<String, dynamic>> response = await Dio().get(dataUrl);
+      if (response.statusCode == 200) {
+        var jokeModel = GirlsImageModel.fromJson(response.data);
 
-      setState(() {
+        setState(() {
+          isLoading = false;
+          pageNumber++;
+          if (isLoadMore) {
+            widgets.addAll(jokeModel.comments);
+          } else {
+            widgets = jokeModel.comments;
+          }
+        });
+      } else {
         isLoading = false;
-        pageNumber++;
-        if (isLoadMore) {
-          widgets.addAll(girlsImageModel.comments);
-        } else {
-          widgets = girlsImageModel.comments;
-        }
-      });
-    } else {
-      isLoading = false;
-      Fluttertoast.showToast(
-          msg: "请求失败",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIos: 1,
-          backgroundColor: Colors.black12);
+        _showError();
+      }
+    } catch (e) {
+      print(e.toString());
     }
   }
+
+  void _showError() {
+    Fluttertoast.showToast(
+        msg: "请求失败",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIos: 1,
+        backgroundColor: Colors.black12);
+  }
+
 
   Widget _getRow(int i) {
     if (i < widgets.length) {
