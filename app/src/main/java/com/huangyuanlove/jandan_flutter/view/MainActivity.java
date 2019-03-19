@@ -15,14 +15,14 @@ import io.flutter.plugin.common.MethodChannel;
 import io.flutter.view.FlutterView;
 
 public class MainActivity extends AppCompatActivity {
-    MethodChannel mChannel;
-    SimpleDateFormat simpleDateFormat;
+   private MethodChannel mChannel;
+   private FlutterView flutterView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
 
-        FlutterView flutterView = Flutter.createView(this, getLifecycle(), "main");
+         flutterView = Flutter.createView(this, getLifecycle(), "main");
         initChannel(flutterView);
 
 
@@ -63,5 +63,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(this.flutterView!=null){
+            this.flutterView.popRoute();
+        }else {
+            super.onBackPressed();
+        }
     }
 }
