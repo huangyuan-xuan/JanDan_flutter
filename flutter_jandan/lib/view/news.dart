@@ -5,6 +5,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'public_widget.dart';
 import 'package:flutter_jandan/bean/news_bean.dart';
 
+import 'package:flutter_jandan/http_util.dart';
+
 class News extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -42,6 +44,12 @@ class NewsState extends State<News> {
         }
       });
     }
+     HttpUtils().dio.get("",queryParameters:{"oxwlxojflwblxbsapi":"get_recent_posts",
+    "include":"url,date,tags,author,title,excerpt,comment_count,comment_status,custom_fields",
+    "custom_fields":"thumb_c,views",
+    "dev":"1",
+    "page":pageNumber});
+
     String dataUrl =
         "https://i.jandan.net/?oxwlxojflwblxbsapi=get_recent_posts&include=url,date,tags,author,title,excerpt,comment_count,comment_status,custom_fields&custom_fields=thumb_c,views&dev=1&page=$pageNumber";
     try {

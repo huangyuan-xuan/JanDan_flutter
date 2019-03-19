@@ -5,6 +5,7 @@ import 'package:flutter_jandan/bean/bored_image_bean.dart';
 import 'public_widget.dart';
 import 'tap_change_color.dart';
 import 'package:dio/dio.dart';
+import 'full_image_with_download.dart';
 
 class BoredImage extends StatefulWidget {
   @override
@@ -30,8 +31,6 @@ class BoredImageState extends State<BoredImage> {
     });
     _loadData(false);
   }
-
-
 
   Future<void> _loadData(bool isLoadMore) async {
     if (isLoading) {
@@ -78,7 +77,14 @@ class BoredImageState extends State<BoredImage> {
         backgroundColor: Colors.black12);
   }
 
-  Widget _getRow(int i) {
+  viewPic(String imageUri) {
+    Navigator.push(context,
+        new MaterialPageRoute(builder: (BuildContext context) {
+      return new ViewImage(imageUri);
+    }));
+  }
+
+  Widget _getRow(int i, BuildContext context) {
     if (i < widgets.length) {
       var data = widgets[i];
       return Card(
@@ -105,7 +111,11 @@ class BoredImageState extends State<BoredImage> {
                   style: TextStyle(fontWeight: FontWeight.bold, height: 1.2),
                 ),
               ),
-              FadeInImage.memoryNetwork(placeholder: kTransparentImage, image: data.pics[0]),
+              GestureDetector(
+                child: FadeInImage.memoryNetwork(
+                    placeholder: kTransparentImage, image: data.pics[0]),
+                onTap: () => viewPic(data.pics[0]),
+              ),
               Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -145,7 +155,7 @@ class BoredImageState extends State<BoredImage> {
           controller: _scrollController,
           itemCount: widgets.length + 1,
           itemBuilder: (BuildContext context, int position) {
-            return _getRow(position);
+            return _getRow(position, context);
           }),
     );
   }
