@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_jandan/view/full_image_with_download.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:dio/dio.dart';
 
-
 import 'package:flutter_jandan/view/public_widget.dart';
 import 'package:flutter_jandan/bean/girls_image_bean.dart';
 import 'tap_change_color.dart';
+
 class GirlsImage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -32,7 +33,12 @@ class GirlsImageState extends State<GirlsImage> {
     _loadData(false);
   }
 
-
+  viewPic(String imageUri) {
+    Navigator.push(context,
+        new MaterialPageRoute(builder: (BuildContext context) {
+      return new ViewImage(imageUri);
+    }));
+  }
 
   Future<void> _loadData(bool isLoadMore) async {
     if (isLoading) {
@@ -79,7 +85,6 @@ class GirlsImageState extends State<GirlsImage> {
         backgroundColor: Colors.black12);
   }
 
-
   Widget _getRow(int i) {
     if (i < widgets.length) {
       var data = widgets[i];
@@ -107,8 +112,11 @@ class GirlsImageState extends State<GirlsImage> {
                   style: TextStyle(fontWeight: FontWeight.bold, height: 1.2),
                 ),
               ),
-              FadeInImage.memoryNetwork(
-                  placeholder: kTransparentImage, image: data.pics[0]),
+              GestureDetector(
+                child: FadeInImage.memoryNetwork(
+                    placeholder: kTransparentImage, image: data.pics[0]),
+                onTap: () => viewPic(data.pics[0]),
+              ),
               Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

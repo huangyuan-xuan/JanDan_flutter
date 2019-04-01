@@ -6,7 +6,6 @@ import 'public_widget.dart';
 import 'tap_change_color.dart';
 import 'package:dio/dio.dart';
 import 'full_image_with_download.dart';
-
 class BoredImage extends StatefulWidget {
   @override
   BoredImageState createState() {
@@ -80,8 +79,8 @@ class BoredImageState extends State<BoredImage> {
   viewPic(String imageUri) {
     Navigator.push(context,
         new MaterialPageRoute(builder: (BuildContext context) {
-      return new ViewImage(imageUri);
-    }));
+          return new ViewImage(imageUri);
+        }));
   }
 
   Widget _getRow(int i, BuildContext context) {
@@ -114,6 +113,11 @@ class BoredImageState extends State<BoredImage> {
               GestureDetector(
                 child: FadeInImage.memoryNetwork(
                     placeholder: kTransparentImage, image: data.pics[0]),
+//                child: CachedNetworkImage(
+//                  imageUrl: data.pics[0],
+//                  placeholder: (context, url) => new CircularProgressIndicator(),
+//                  errorWidget: (context, url, error) => new Icon(Icons.error),
+//                ),
                 onTap: () => viewPic(data.pics[0]),
 //                onTap: () => showDialog<Null>(
 //                      context: context,
