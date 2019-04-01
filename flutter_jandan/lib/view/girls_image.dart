@@ -1,11 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_jandan/view/full_image_with_download.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:transparent_image/transparent_image.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
-
-import 'package:flutter_jandan/view/public_widget.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_jandan/bean/girls_image_bean.dart';
+import 'package:flutter_jandan/view/full_image_with_download.dart';
+import 'package:flutter_jandan/view/public_widget.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
 import 'tap_change_color.dart';
 
 class GirlsImage extends StatefulWidget {
@@ -113,8 +113,11 @@ class GirlsImageState extends State<GirlsImage> {
                 ),
               ),
               GestureDetector(
-                child: FadeInImage.memoryNetwork(
-                    placeholder: kTransparentImage, image: data.pics[0]),
+                child: new CachedNetworkImage(
+                  placeholder: (context, url) => new CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => new Icon(Icons.error),
+                  imageUrl:data.pics[0],
+                ),
                 onTap: () => viewPic(data.pics[0]),
               ),
               Row(
