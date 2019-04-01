@@ -1,11 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_jandan/bean/news_bean.dart';
+import 'package:flutter_jandan/http_util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'public_widget.dart';
-import 'package:flutter_jandan/bean/news_bean.dart';
-
-import 'package:flutter_jandan/http_util.dart';
 
 class News extends StatefulWidget {
   @override
@@ -32,7 +32,6 @@ class NewsState extends State<News> {
     _loadData(false);
   }
 
-
   Future<void> _loadData(bool isLoadMore) async {
     if (isLoading) {
       return null;
@@ -44,11 +43,14 @@ class NewsState extends State<News> {
         }
       });
     }
-     HttpUtils().dio.get("",queryParameters:{"oxwlxojflwblxbsapi":"get_recent_posts",
-    "include":"url,date,tags,author,title,excerpt,comment_count,comment_status,custom_fields",
-    "custom_fields":"thumb_c,views",
-    "dev":"1",
-    "page":pageNumber});
+    HttpUtils().dio.get("", queryParameters: {
+      "oxwlxojflwblxbsapi": "get_recent_posts",
+      "include":
+          "url,date,tags,author,title,excerpt,comment_count,comment_status,custom_fields",
+      "custom_fields": "thumb_c,views",
+      "dev": "1",
+      "page": pageNumber
+    });
 
     String dataUrl =
         "https://i.jandan.net/?oxwlxojflwblxbsapi=get_recent_posts&include=url,date,tags,author,title,excerpt,comment_count,comment_status,custom_fields&custom_fields=thumb_c,views&dev=1&page=$pageNumber";
@@ -128,11 +130,18 @@ class NewsState extends State<News> {
             flex: 2,
             child: Padding(
               padding: EdgeInsets.all(8.0),
-              child: Image.network(
-                data.customFields.thumb[0],
+              child: new CachedNetworkImage(
+                placeholder: (context, url) => new CircularProgressIndicator(),
+                errorWidget: (context, url, error) => new Icon(Icons.error),
+                imageUrl: data.customFields.thumb[0],
                 fit: BoxFit.fill,
                 height: 60,
               ),
+//              child: Image.network(
+//                data.customFields.thumb[0],
+//                fit: BoxFit.fill,
+//                height: 60,
+//              ),
             ),
           )
         ],
