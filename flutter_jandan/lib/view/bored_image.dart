@@ -115,6 +115,18 @@ class BoredImageState extends State<BoredImage> {
                 child: FadeInImage.memoryNetwork(
                     placeholder: kTransparentImage, image: data.pics[0]),
                 onTap: () => viewPic(data.pics[0]),
+//                onTap: () => showDialog<Null>(
+//                      context: context,
+//                      barrierDismissible: true,
+//                      builder: (BuildContext context) {
+//                        return new AlertDialog(
+//                          title: new Text('标题'),
+//                          content: new SingleChildScrollView(
+//                            child: FadeInImage.memoryNetwork(placeholder: kTransparentImage, image: data.pics[0]),
+//                          ),
+//                        );
+//                      },
+//                    )
               ),
               Row(
                 mainAxisSize: MainAxisSize.max,
