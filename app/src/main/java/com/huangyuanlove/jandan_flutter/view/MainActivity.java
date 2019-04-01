@@ -3,10 +3,6 @@ package com.huangyuanlove.jandan_flutter.view;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.CountDownTimer;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import androidx.appcompat.app.AppCompatActivity;
 import io.flutter.facade.Flutter;
