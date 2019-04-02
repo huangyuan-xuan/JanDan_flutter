@@ -1,10 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jandan/bean/bored_image_bean.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
-import 'full_image_with_download.dart';
 import 'public_widget.dart';
 import 'tap_change_color.dart';
 class BoredImage extends StatefulWidget {
@@ -77,12 +75,7 @@ class BoredImageState extends State<BoredImage> {
         backgroundColor: Colors.black12);
   }
 
-  viewPic(String imageUri) {
-    Navigator.push(context,
-        new MaterialPageRoute(builder: (BuildContext context) {
-          return new ViewImage(imageUri);
-        }));
-  }
+
 
   Widget _getRow(int i, BuildContext context) {
     if (i < widgets.length) {
@@ -111,14 +104,7 @@ class BoredImageState extends State<BoredImage> {
                   style: TextStyle(fontWeight: FontWeight.bold, height: 1.2),
                 ),
               ),
-              GestureDetector(
-                child: new CachedNetworkImage(
-                  placeholder: (context, url) => new CircularProgressIndicator(),
-                  errorWidget: (context, url, error) => new Icon(Icons.error),
-                  imageUrl:data.pics[0],
-                ),
-                onTap: () => viewPic(data.pics[0]),
-              ),
+              buildMultiImageWidget(context,data.pics),
               Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

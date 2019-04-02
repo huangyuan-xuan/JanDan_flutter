@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:transparent_image/transparent_image.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class ViewImage extends StatelessWidget {
   final String imageUri;
@@ -13,8 +13,11 @@ class ViewImage extends StatelessWidget {
         child: ListView(
           shrinkWrap: true,
           children: <Widget>[
-            FadeInImage.memoryNetwork(
-                placeholder: kTransparentImage, image: imageUri),
+            new CachedNetworkImage(
+              placeholder: (context, url) => new CircularProgressIndicator(),
+              errorWidget: (context, url, error) => new Icon(Icons.error),
+              imageUrl:imageUri,
+            )
           ],
         ),
       ),

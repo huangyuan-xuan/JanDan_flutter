@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:cached_network_image/cached_network_image.dart';
+import 'full_image_with_download.dart';
 // 加载更多时显示的组件
 Widget getOnLoadMoreWidget() {
   return Center(
@@ -19,5 +20,53 @@ Widget getOnLoadMoreWidget() {
         ],
       ),
     ),
+  );
+}
+
+//查看大图
+viewPic(BuildContext context,String imageUri) {
+  Navigator.push(context,
+      new MaterialPageRoute(builder: (BuildContext context) {
+        return new ViewImage(imageUri);
+      }));
+}
+
+
+//展示图片的item
+Widget buildMultiImageWidget(BuildContext context, List<String> imageUrls){
+  if(imageUrls.length == 1){
+   return buildImageWidget(context,imageUrls[0]);
+
+  }else {
+    return GridView.count(
+      primary: false,
+      shrinkWrap: true,
+      crossAxisSpacing: 10.0,
+        mainAxisSpacing:10.0,
+      crossAxisCount: 3,
+      children: buildImageListWidget(context,imageUrls)
+    );
+  }
+}
+
+List<Widget> buildImageListWidget(BuildContext context,List<String> imageUrls){
+  List<Widget> imageWidgets =[];
+  for(int i = 0 ; i < imageUrls.length;i++){
+    imageWidgets.add(buildImageWidget(context,imageUrls[i]));
+  }
+
+//  imageUrls.map((imageUrl)=>imageWidgets.add(buildImageWidget(context,imageUrl)));
+  return imageWidgets;
+
+}
+
+Widget buildImageWidget(BuildContext context, String image){
+  return GestureDetector(
+    child: new CachedNetworkImage(
+      placeholder: (context, url) => new CircularProgressIndicator(),
+      errorWidget: (context, url, error) => new Icon(Icons.error),
+      imageUrl:image,
+    ),
+    onTap: () => viewPic(context,image),
   );
 }

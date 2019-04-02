@@ -112,14 +112,8 @@ class GirlsImageState extends State<GirlsImage> {
                   style: TextStyle(fontWeight: FontWeight.bold, height: 1.2),
                 ),
               ),
-              GestureDetector(
-                child: new CachedNetworkImage(
-                  placeholder: (context, url) => new CircularProgressIndicator(),
-                  errorWidget: (context, url, error) => new Icon(Icons.error),
-                  imageUrl:data.pics[0],
-                ),
-                onTap: () => viewPic(data.pics[0]),
-              ),
+              buildMultiImageWidget(context,data.pics),
+
               Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
