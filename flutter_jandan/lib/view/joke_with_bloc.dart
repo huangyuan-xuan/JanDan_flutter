@@ -7,9 +7,11 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'tap_change_color.dart';
 
 class JokeWithBLoC extends StatelessWidget {
+  JokeBLoC jokeBLoC;
+
   @override
   Widget build(BuildContext context) {
-    JokeBLoC jokeBLoC = BLoCProvider.of<JokeBLoC>(context);
+    jokeBLoC = BLoCProvider.of<JokeBLoC>(context);
 
     ScrollController _scrollController = new ScrollController();
     _scrollController.addListener(() {
@@ -19,22 +21,30 @@ class JokeWithBLoC extends StatelessWidget {
       }
     });
     jokeBLoC.inJokesIndex.add(false);
-    return StreamBuilder<List<JokeBean>>(
-        stream: jokeBLoC.outResultList,
-        builder:
-            (BuildContext context, AsyncSnapshot<List<JokeBean>> snapshot) {
-          if (snapshot.data == null || snapshot.data.isEmpty) {
-            return SpinKitWave(
-                color: Colors.redAccent, type: SpinKitWaveType.start);
-          }
 
-          return ListView.builder(
-              controller: _scrollController,
-              itemCount: snapshot.data == null ? 1 : snapshot.data.length + 1,
-              itemBuilder: (BuildContext context, int position) {
-                return _getRow(context, snapshot.data, position);
-              });
-        });
+    return RefreshIndicator(
+      onRefresh: () => refresh(),
+      child: StreamBuilder<List<JokeBean>>(
+          stream: jokeBLoC.outResultList,
+          builder:
+              (BuildContext context, AsyncSnapshot<List<JokeBean>> snapshot) {
+            if (snapshot.data == null || snapshot.data.isEmpty) {
+              return SpinKitWave(
+                  color: Colors.redAccent, type: SpinKitWaveType.start);
+            }
+
+            return ListView.builder(
+                controller: _scrollController,
+                itemCount: snapshot.data == null ? 1 : snapshot.data.length + 1,
+                itemBuilder: (BuildContext context, int position) {
+                  return _getRow(context, snapshot.data, position);
+                });
+          }),
+    );
+  }
+
+  Future<void> refresh() async {
+    jokeBLoC.inJokesIndex.add(false);
   }
 
   Widget _getRow(BuildContext context, List<JokeBean> widgets, int i) {

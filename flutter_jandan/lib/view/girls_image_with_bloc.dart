@@ -7,36 +7,45 @@ import 'package:flutter_jandan/view/public_widget.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 class GirlsImageWithBLoC extends StatelessWidget {
 
+  GirlsImageBLoC girlsImageWithBLoC;
   @override
   Widget build(BuildContext context) {
-    GirlsImageBLoC girlsImageWithbloc  = BLoCProvider.of<GirlsImageBLoC>(context);
+    girlsImageWithBLoC  = BLoCProvider.of<GirlsImageBLoC>(context);
     ScrollController _scrollController = new ScrollController();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        girlsImageWithbloc.inGirlsIndex.add(true);
+        girlsImageWithBLoC.inGirlsIndex.add(true);
       }
     });
-    girlsImageWithbloc.inGirlsIndex.add(false);
+    girlsImageWithBLoC.inGirlsIndex.add(false);
 
-    return StreamBuilder<List<GirlsImageBean>>(
-      stream: girlsImageWithbloc.outGirlsList,
-        builder: (BuildContext context,
-        AsyncSnapshot<List<GirlsImageBean>> snapshot) {
-        if(snapshot.data == null || snapshot.data.isEmpty){
-          return SpinKitWave(color: Colors.redAccent, type: SpinKitWaveType.start);
-        }
+    return RefreshIndicator(
+      onRefresh: ()=>refresh(),
+      child: StreamBuilder<List<GirlsImageBean>>(
+          stream: girlsImageWithBLoC.outGirlsList,
+          builder: (BuildContext context,
+              AsyncSnapshot<List<GirlsImageBean>> snapshot) {
+            if(snapshot.data == null || snapshot.data.isEmpty){
+              return SpinKitWave(color: Colors.redAccent, type: SpinKitWaveType.start);
+            }
 
-
-        return ListView.builder(
-            controller: _scrollController,
-            itemCount: snapshot.data ==null?1:snapshot.data.length + 1,
-            itemBuilder: (BuildContext context, int position) {
-              return _getRow(context,snapshot.data, position);
-            });
-        }
+            return ListView.builder(
+                controller: _scrollController,
+                itemCount: snapshot.data ==null?1:snapshot.data.length + 1,
+                itemBuilder: (BuildContext context, int position) {
+                  return _getRow(context,snapshot.data, position);
+                });
+          }
+      ),
     );
   }
+
+  Future<void> refresh() async{
+    girlsImageWithBLoC.inGirlsIndex.add(false);
+
+  }
+
   Widget _getRow(BuildContext context,List<GirlsImageBean> widgets, int i) {
 
     if(widgets==null){

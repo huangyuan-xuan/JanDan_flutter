@@ -7,9 +7,10 @@ import 'package:flutter_jandan/view/public_widget.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class BoredImageWithBLoC extends StatelessWidget {
+  BoredBLoC boredBLoC;
   @override
   Widget build(BuildContext context) {
-    BoredBLoC boredBLoC = BLoCProvider.of<BoredBLoC>(context);
+     boredBLoC = BLoCProvider.of<BoredBLoC>(context);
 
     ScrollController _scrollController = new ScrollController();
     _scrollController.addListener(() {
@@ -20,25 +21,33 @@ class BoredImageWithBLoC extends StatelessWidget {
     });
 
     boredBLoC.inBoredIndex.add(false);
-    return StreamBuilder<List<BoredImageBean>>(
-        stream: boredBLoC.outResult,
-        builder: (BuildContext context,
-            AsyncSnapshot<List<BoredImageBean>> snapshot) {
-          print("bored snapshot data ${snapshot.data ==null?"null":snapshot.data.length}");
 
-          if (snapshot.data == null || snapshot.data.isEmpty) {
-            return SpinKitWave(
-                color: Colors.redAccent, type: SpinKitWaveType.start);
-          }
+    return RefreshIndicator(
+      onRefresh: ()=>refresh(),
+      child:StreamBuilder<List<BoredImageBean>>(
+          stream: boredBLoC.outResult,
+          builder: (BuildContext context,
+              AsyncSnapshot<List<BoredImageBean>> snapshot) {
+            if (snapshot.data == null || snapshot.data.isEmpty) {
+              return SpinKitWave(
+                  color: Colors.redAccent, type: SpinKitWaveType.start);
+            }
 
-          return ListView.builder(
-              controller: _scrollController,
-              itemCount: snapshot.data == null ? 1 : snapshot.data.length + 1,
-              itemBuilder: (BuildContext context, int position) {
-                return _getRow(context, snapshot.data, position);
-              });
-        });
+            return ListView.builder(
+                controller: _scrollController,
+                itemCount: snapshot.data == null ? 1 : snapshot.data.length + 1,
+                itemBuilder: (BuildContext context, int position) {
+                  return _getRow(context, snapshot.data, position);
+                });
+          }) ,
+    );
   }
+
+  Future<void> refresh() async{
+    boredBLoC.inBoredIndex.add(false);
+
+  }
+
 
   Widget _getRow(BuildContext context, List<BoredImageBean> widgets, int i) {
     if (widgets == null) {

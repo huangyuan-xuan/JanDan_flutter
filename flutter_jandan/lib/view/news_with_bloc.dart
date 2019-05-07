@@ -7,10 +7,10 @@ import 'package:flutter_jandan/view/public_widget.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class NewsWithBLoC extends StatelessWidget {
-
+  NewsBLoC newsBLoC ;
   @override
   Widget build(BuildContext context) {
-    NewsBLoC newsBLoC = BLoCProvider.of<NewsBLoC>(context);
+    newsBLoC = BLoCProvider.of<NewsBLoC>(context);
     ScrollController _scrollController = new ScrollController();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
@@ -20,23 +20,33 @@ class NewsWithBLoC extends StatelessWidget {
     });
     newsBLoC.inNewsIndex.add(false);
 
-    return StreamBuilder<List<NewsBean>>(
-        stream: newsBLoC.outResultList,
-        builder:
-            (BuildContext context, AsyncSnapshot<List<NewsBean>> snapshot) {
-          if (snapshot.data == null || snapshot.data.isEmpty) {
-            return SpinKitWave(
-                color: Colors.redAccent, type: SpinKitWaveType.start);
-          }
+    return  RefreshIndicator(
+        onRefresh: () => refresh(),
+        child: StreamBuilder<List<NewsBean>>(
+            stream: newsBLoC.outResultList,
+            builder:
+                (BuildContext context, AsyncSnapshot<List<NewsBean>> snapshot) {
+              if (snapshot.data == null || snapshot.data.isEmpty) {
+                return SpinKitWave(
+                    color: Colors.redAccent, type: SpinKitWaveType.start);
+              }
 
-          return ListView.builder(
-              controller: _scrollController,
-              itemCount: snapshot.data == null ? 1 : snapshot.data.length + 1,
-              itemBuilder: (BuildContext context, int position) {
-                return _getRow(context, snapshot.data, position);
-              });
-        });
+              return ListView.builder(
+                  controller: _scrollController,
+                  itemCount:
+                      snapshot.data == null ? 1 : snapshot.data.length + 1,
+                  itemBuilder: (BuildContext context, int position) {
+                    return _getRow(context, snapshot.data, position);
+                  });
+            }));
   }
+
+
+  Future<void> refresh() async{
+    newsBLoC.inNewsIndex.add(false);
+
+  }
+
 
   Widget _getRow(BuildContext context, List<NewsBean> widgets, int i) {
     if (widgets == null) {
