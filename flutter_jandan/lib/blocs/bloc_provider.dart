@@ -1,7 +1,16 @@
 import 'package:flutter/material.dart';
-
+import 'package:fluttertoast/fluttertoast.dart';
 abstract class BLoCBase {
   void dispose();
+
+  void showError() {
+    Fluttertoast.showToast(
+        msg: "请求失败",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIos: 1,
+        backgroundColor: Colors.black12);
+  }
 }
 
 class BLoCProvider<T extends BLoCBase> extends StatefulWidget {
@@ -37,8 +46,11 @@ class _BLoCProviderState<T> extends State<BLoCProvider<BLoCBase>> {
 
   @override
   Widget build(BuildContext context) {
-    print("BLoCProvider build");
+
     print("BLoCProvider build-->${widget.child.hashCode}");
     return widget.child;
   }
+
+
+
 }

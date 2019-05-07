@@ -4,13 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.widget.ExpandableListView;
+import android.widget.ListView;
 
 import com.huangyuanlove.jandan_flutter.R;
 import com.huangyuanlove.jandan_flutter.adapter.LicenseAdapter;
 
 public class LicenseActivity extends AppCompatActivity {
 
-    private ExpandableListView expandableListView;
+    private ListView listView;
 
 
     @Override
@@ -22,8 +23,8 @@ public class LicenseActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        expandableListView = findViewById(R.id.license_list);
-        expandableListView.setAdapter(new LicenseAdapter(this));
+        listView = findViewById(R.id.license_list);
+        listView.setAdapter(new LicenseAdapter(this));
 
     }
 }

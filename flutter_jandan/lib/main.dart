@@ -2,13 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:ui';
 import 'view/my_drawer.dart';
-import 'view/bored_image.dart';
-import 'view/joke.dart';
-import 'view/news.dart';
 import 'view/girls_image_with_bloc.dart';
+import 'view/news_with_bloc.dart';
+import 'view/joke_with_bloc.dart';
+import 'view/bored_image_with_bloc.dart';
+
 import 'package:flutter_jandan/blocs/bloc_provider.dart';
 import 'package:flutter_jandan/blocs/application_bloc.dart';
 import 'package:flutter_jandan/blocs/girls_image_bloc.dart';
+import 'package:flutter_jandan/blocs/bored_bloc.dart';
+import 'package:flutter_jandan/blocs/joke_bloc.dart';
+import 'package:flutter_jandan/blocs/news_bloc.dart';
 
 //void main() {
 //  debugPaintSizeEnabled = true;
@@ -89,9 +93,21 @@ class JanDanAppState extends State<JanDanApp>
       body: TabBarView(
         controller: _tabController,
         children: <Widget>[
-          News(),
-          BoredImage(),
-          Joke(),
+
+          BLoCProvider<NewsBLoC>(
+            bloc: NewsBLoC(),
+            child: NewsWithBLoC(),
+          ),
+
+          BLoCProvider<BoredBLoC>(
+            bloc: BoredBLoC(),
+            child: BoredImageWithBLoC(),
+          ),
+          BLoCProvider<JokeBLoC>(
+            bloc: JokeBLoC(),
+            child: JokeWithBLoC(),
+          ),
+
           BLoCProvider<GirlsImageBLoC>(
             bloc: GirlsImageBLoC(),
             child: GirlsImageWithBLoC(),

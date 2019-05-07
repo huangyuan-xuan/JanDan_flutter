@@ -1,46 +1,48 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_jandan/blocs/girls_image_bloc.dart';
+import 'package:flutter_jandan/blocs/bored_bloc.dart';
 import 'package:flutter_jandan/blocs/bloc_provider.dart';
-import 'package:flutter_jandan/bean/girls_image_bean.dart';
+import 'package:flutter_jandan/bean/bored_image_bean.dart';
 import 'tap_change_color.dart';
 import 'package:flutter_jandan/view/public_widget.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-class GirlsImageWithBLoC extends StatelessWidget {
 
+class BoredImageWithBLoC extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    GirlsImageBLoC girlsImageWithbloc  = BLoCProvider.of<GirlsImageBLoC>(context);
+    BoredBLoC boredBLoC = BLoCProvider.of<BoredBLoC>(context);
+
     ScrollController _scrollController = new ScrollController();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        girlsImageWithbloc.inGirlsIndex.add(true);
+        boredBLoC.inBoredIndex.add(true);
       }
     });
-    girlsImageWithbloc.inGirlsIndex.add(false);
 
-    return StreamBuilder<List<GirlsImageBean>>(
-      stream: girlsImageWithbloc.outGirlsList,
+    boredBLoC.inBoredIndex.add(false);
+    return StreamBuilder<List<BoredImageBean>>(
+        stream: boredBLoC.outResult,
         builder: (BuildContext context,
-        AsyncSnapshot<List<GirlsImageBean>> snapshot) {
-        if(snapshot.data == null || snapshot.data.isEmpty){
-          return SpinKitWave(color: Colors.redAccent, type: SpinKitWaveType.start);
-        }
+            AsyncSnapshot<List<BoredImageBean>> snapshot) {
+          print("bored snapshot data ${snapshot.data ==null?"null":snapshot.data.length}");
 
+          if (snapshot.data == null || snapshot.data.isEmpty) {
+            return SpinKitWave(
+                color: Colors.redAccent, type: SpinKitWaveType.start);
+          }
 
-        return ListView.builder(
-            controller: _scrollController,
-            itemCount: snapshot.data ==null?1:snapshot.data.length + 1,
-            itemBuilder: (BuildContext context, int position) {
-              return _getRow(context,snapshot.data, position);
-            });
-        }
-    );
+          return ListView.builder(
+              controller: _scrollController,
+              itemCount: snapshot.data == null ? 1 : snapshot.data.length + 1,
+              itemBuilder: (BuildContext context, int position) {
+                return _getRow(context, snapshot.data, position);
+              });
+        });
   }
-  Widget _getRow(BuildContext context,List<GirlsImageBean> widgets, int i) {
 
-    if(widgets==null){
-      return  null;
+  Widget _getRow(BuildContext context, List<BoredImageBean> widgets, int i) {
+    if (widgets == null) {
+      return null;
     }
 
     if (i < widgets.length) {
@@ -52,25 +54,24 @@ class GirlsImageWithBLoC extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                data.authorName,
+                "${data.author}",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
               ),
               Text(
-                data.date,
+                "${data.date}",
                 style: TextStyle(fontSize: 12),
               ),
               Offstage(
-                offstage: data.textContent == null ||
-                    data.textContent.trim().length == 0,
+                offstage: data.content == null ||
+                    data.content.toString().trim().length == 0,
                 child: Text(
-                  data.textContent.trim(),
+                  "${data.content.toString().trim()}",
                   style: TextStyle(fontWeight: FontWeight.bold, height: 1.2),
                 ),
               ),
-              buildMultiImageWidget(context,data.pics),
-
+              buildMultiImageWidget(context, data.pics),
               Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -101,6 +102,4 @@ class GirlsImageWithBLoC extends StatelessWidget {
       return getOnLoadMoreWidget();
     }
   }
-
-
 }

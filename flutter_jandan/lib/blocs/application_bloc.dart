@@ -2,7 +2,7 @@
 
 import 'bloc_provider.dart';
 
-class ApplicationBloc implements BLoCBase{
+class ApplicationBloc extends BLoCBase{
 
   ApplicationBloc(){
 

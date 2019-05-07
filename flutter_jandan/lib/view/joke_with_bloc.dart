@@ -1,76 +1,74 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_jandan/blocs/girls_image_bloc.dart';
+import 'package:flutter_jandan/blocs/joke_bloc.dart';
 import 'package:flutter_jandan/blocs/bloc_provider.dart';
-import 'package:flutter_jandan/bean/girls_image_bean.dart';
-import 'tap_change_color.dart';
+import 'package:flutter_jandan/bean/joke_bean.dart';
 import 'package:flutter_jandan/view/public_widget.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-class GirlsImageWithBLoC extends StatelessWidget {
+import 'tap_change_color.dart';
 
+class JokeWithBLoC extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    GirlsImageBLoC girlsImageWithbloc  = BLoCProvider.of<GirlsImageBLoC>(context);
+    JokeBLoC jokeBLoC = BLoCProvider.of<JokeBLoC>(context);
+
     ScrollController _scrollController = new ScrollController();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        girlsImageWithbloc.inGirlsIndex.add(true);
+        jokeBLoC.inJokesIndex.add(true);
       }
     });
-    girlsImageWithbloc.inGirlsIndex.add(false);
+    jokeBLoC.inJokesIndex.add(false);
+    return StreamBuilder<List<JokeBean>>(
+        stream: jokeBLoC.outResultList,
+        builder:
+            (BuildContext context, AsyncSnapshot<List<JokeBean>> snapshot) {
+          if (snapshot.data == null || snapshot.data.isEmpty) {
+            return SpinKitWave(
+                color: Colors.redAccent, type: SpinKitWaveType.start);
+          }
 
-    return StreamBuilder<List<GirlsImageBean>>(
-      stream: girlsImageWithbloc.outGirlsList,
-        builder: (BuildContext context,
-        AsyncSnapshot<List<GirlsImageBean>> snapshot) {
-        if(snapshot.data == null || snapshot.data.isEmpty){
-          return SpinKitWave(color: Colors.redAccent, type: SpinKitWaveType.start);
-        }
-
-
-        return ListView.builder(
-            controller: _scrollController,
-            itemCount: snapshot.data ==null?1:snapshot.data.length + 1,
-            itemBuilder: (BuildContext context, int position) {
-              return _getRow(context,snapshot.data, position);
-            });
-        }
-    );
+          return ListView.builder(
+              controller: _scrollController,
+              itemCount: snapshot.data == null ? 1 : snapshot.data.length + 1,
+              itemBuilder: (BuildContext context, int position) {
+                return _getRow(context, snapshot.data, position);
+              });
+        });
   }
-  Widget _getRow(BuildContext context,List<GirlsImageBean> widgets, int i) {
 
-    if(widgets==null){
-      return  null;
+  Widget _getRow(BuildContext context, List<JokeBean> widgets, int i) {
+    if (widgets == null) {
+      return null;
     }
 
     if (i < widgets.length) {
       var data = widgets[i];
-      return Card(
+
+      return new Card(
         child: Container(
-          padding: EdgeInsets.all(8.0),
+          padding: EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                data.authorName,
+                "${widgets[i].author}",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Text(
-                data.date,
-                style: TextStyle(fontSize: 12),
-              ),
-              Offstage(
-                offstage: data.textContent == null ||
-                    data.textContent.trim().length == 0,
+              Padding(
+                padding: EdgeInsets.only(top: 10.0, bottom: 8.0),
                 child: Text(
-                  data.textContent.trim(),
-                  style: TextStyle(fontWeight: FontWeight.bold, height: 1.2),
+                  "${widgets[i].date}",
+                  style: TextStyle(
+                      fontSize: 14, color: Colors.black54, height: 1.1),
                 ),
               ),
-              buildMultiImageWidget(context,data.pics),
-
+              Text(
+                "${widgets[i].content}",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
               Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -101,6 +99,4 @@ class GirlsImageWithBLoC extends StatelessWidget {
       return getOnLoadMoreWidget();
     }
   }
-
-
 }

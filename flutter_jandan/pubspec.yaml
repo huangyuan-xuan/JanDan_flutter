@@ -90,5 +90,5 @@ flutter:
   # They also do not have any bearing on your native host application's
   # identifiers, which may be completely independent or the same as these.
   module:
-    androidPackage: com.huangyuanlove.jandan_flutter
-    iosBundleIdentifier: com.huangyuanlove.jandan_flutter
+    androidPackage: com.huangyuanlove.jandan_flutter.host
+    iosBundleIdentifier: com.huangyuanlove.jandan_flutter.host
