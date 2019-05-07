@@ -1,17 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:ui';
 import 'view/my_drawer.dart';
 import 'view/bored_image.dart';
-import 'view/girls_image.dart';
 import 'view/joke.dart';
 import 'view/news.dart';
+import 'view/girls_image_with_bloc.dart';
+import 'package:flutter_jandan/blocs/bloc_provider.dart';
+import 'package:flutter_jandan/blocs/application_bloc.dart';
+import 'package:flutter_jandan/blocs/girls_image_bloc.dart';
 
-void main() {
+//void main() {
 //  debugPaintSizeEnabled = true;
-  runApp(_widgetForRoute(window.defaultRouteName));
+//  runApp(_widgetForRoute(window.defaultRouteName));
 //runApp(App());
+//}
+
+Future<void> main() async {
+//  debugPrintRebuildDirtyWidgets = true;
+  return runApp(BLoCProvider<ApplicationBloc>(
+    bloc: ApplicationBloc(),
+    child: _widgetForRoute(window.defaultRouteName),
+  ));
 }
 
 Widget _widgetForRoute(String route) {
@@ -51,10 +61,8 @@ class JanDanAppState extends State<JanDanApp>
 
 //  MethodChannel channel;
 
-
   @override
   void initState() {
-
 //    channel = const MethodChannel('my_flutter/plugin');
 //    channel.setMethodCallHandler(methodHandler);
 
@@ -66,7 +74,6 @@ class JanDanAppState extends State<JanDanApp>
   Future methodHandler(MethodCall call) async {
     print("${call.method},${call.arguments}");
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +92,10 @@ class JanDanAppState extends State<JanDanApp>
           News(),
           BoredImage(),
           Joke(),
-          GirlsImage(),
+          BLoCProvider<GirlsImageBLoC>(
+            bloc: GirlsImageBLoC(),
+            child: GirlsImageWithBLoC(),
+          )
         ],
       ),
     );

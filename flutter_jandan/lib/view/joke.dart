@@ -156,7 +156,7 @@ class _JokeState extends State<Joke> with TickerProviderStateMixin {
         onRefresh: () => _loadData(false),
         child: new ListView.builder(
             controller: _scrollController,
-            itemCount: widgets.length + 1,
+            itemCount: widgets.length==0?0:widgets.length + 1,
             itemBuilder: (BuildContext context, int position) {
               return getRow(position);
             }));

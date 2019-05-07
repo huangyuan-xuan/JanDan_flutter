@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'full_image_with_download.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 // 加载更多时显示的组件
 Widget getOnLoadMoreWidget() {
   return Center(
@@ -63,7 +64,7 @@ List<Widget> buildImageListWidget(BuildContext context,List<String> imageUrls){
 Widget buildImageWidget(BuildContext context, String image){
   return GestureDetector(
     child: new CachedNetworkImage(
-      placeholder: (context, url) => new CircularProgressIndicator(),
+      placeholder: (context, url) => SpinKitPumpingHeart(color: Colors.redAccent),
       errorWidget: (context, url, error) => new Icon(Icons.error),
       imageUrl:image,
     ),

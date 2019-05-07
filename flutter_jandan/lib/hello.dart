@@ -2,7 +2,7 @@ import 'dart:async';
 
 void main() {
   // 初始化一个单订阅的Stream controller
-  final StreamController ctrl = StreamController();
+  final StreamController ctrl = StreamController.broadcast();
 
   // 初始化一个监听
   final StreamSubscription subscription = ctrl.stream.listen((data) => print('$data'));

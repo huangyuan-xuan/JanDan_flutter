@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_jandan/bean/news_bean.dart';
 import 'package:flutter_jandan/http_util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'public_widget.dart';
 
 class News extends StatefulWidget {
@@ -131,17 +131,13 @@ class NewsState extends State<News> {
             child: Padding(
               padding: EdgeInsets.all(8.0),
               child: new CachedNetworkImage(
-                placeholder: (context, url) => new CircularProgressIndicator(),
+                placeholder: (context, url) => SpinKitFadingGrid(
+                    color: Colors.blueGrey, shape: BoxShape.circle),
                 errorWidget: (context, url, error) => new Icon(Icons.error),
                 imageUrl: data.customFields.thumb[0],
                 fit: BoxFit.fill,
                 height: 60,
               ),
-//              child: Image.network(
-//                data.customFields.thumb[0],
-//                fit: BoxFit.fill,
-//                height: 60,
-//              ),
             ),
           )
         ],
@@ -157,7 +153,7 @@ class NewsState extends State<News> {
         onRefresh: () => _loadData(false),
         child: new ListView.builder(
             controller: _scrollController,
-            itemCount: widgets.length + 1,
+            itemCount: widgets.length == 0 ? 0 : widgets.length + 1,
             itemBuilder: (BuildContext context, int position) {
               return Column(
                 children: <Widget>[

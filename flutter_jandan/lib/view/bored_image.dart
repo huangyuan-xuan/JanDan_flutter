@@ -142,7 +142,7 @@ class BoredImageState extends State<BoredImage> {
       onRefresh: () => _loadData(false),
       child: ListView.builder(
           controller: _scrollController,
-          itemCount: widgets.length + 1,
+          itemCount: widgets.length==0?0:widgets.length + 1,
           itemBuilder: (BuildContext context, int position) {
             return _getRow(position, context);
           }),
