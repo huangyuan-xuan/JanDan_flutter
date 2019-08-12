@@ -53,6 +53,10 @@ public class MainActivity extends AppCompatActivity {
 
                         result.success("jump");
                         break;
+                    case "to_another_flutter":
+
+
+                        break;
                     default:
                         break;
                 }
